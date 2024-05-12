@@ -2,6 +2,10 @@ package Test;
 
 import java.io.IOException;
 
+import Steuerung.PassingDay;
+import Steuerung.PassingMonth;
+import Steuerung.PassingWeek;
+
 public class StartApp {
     public static void main(String[] args) throws IOException {
     	//test

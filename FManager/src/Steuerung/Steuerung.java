@@ -1,4 +1,6 @@
-package Test;
+package Steuerung;
+
+import Test.MainGUI;
 
 public class Steuerung {
 
