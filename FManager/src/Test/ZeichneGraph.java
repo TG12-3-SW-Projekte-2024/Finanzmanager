@@ -27,7 +27,8 @@ public class ZeichneGraph extends JPanel {
    protected double saldo;
     
    
-   public ZeichneGraph( ) {
+   public ZeichneGraph( ) 
+   {
 	   
    }
    
