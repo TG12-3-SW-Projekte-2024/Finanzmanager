@@ -14,7 +14,7 @@ import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class ZeichneGraph extends JPanel {
-   private static final int MAX_SCORE = 2000;
+   private static final int MAX_SCORE = 20;
    private static final int PREF_W = 800;
    private static final int PREF_H = 650;
    private static final int BORDER_GAP = 30;

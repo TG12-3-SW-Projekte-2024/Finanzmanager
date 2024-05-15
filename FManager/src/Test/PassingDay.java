@@ -1,14 +1,13 @@
-package Steuerung;
+package Test;
 
 import java.time.*;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.concurrent.*;
 
-import Test.MainGUI;
-
-public class PassingDay {
+public class PassingDay extends MainGUI {
 	
+	private static final long serialVersionUID = 1L;
 		private static final Path LAST_RUN_DAY_FILE = Paths.get("lastRunDay.txt");
 	    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	    private MainGUI dieGUI;

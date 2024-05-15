@@ -132,7 +132,10 @@ public class MainGUI extends JFrame {
 		contentPane.add(panelButtons, BorderLayout.SOUTH);
 		
 		
-		
+		/**
+		 * Wird der Button add gedrückt, werden die Werte in TFs 
+		 * in Arrays gespeichert
+		 */
 		//Button Add & Zeit
 		btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() 
@@ -159,6 +162,9 @@ public class MainGUI extends JFrame {
 		}
 		});
 		
+		/**
+		 * Wird der btn Zeit gedrückt, so wird ein Zeit vergehen simuliert
+		 */
 		btnZeit = new JButton("Zeit");
 		btnZeit.addActionListener(new ActionListener() 
 		{
@@ -166,7 +172,13 @@ public class MainGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) 
 			{
 				monthPassed();	
-				//derGraph = new ZeichneGraph();
+				for (int i = 0; i < 4; i++) {
+					weekPassed();
+				}
+				for (int i = 0; i <	30; i++) {
+					dayPassed();
+				}
+				
 				}
 			}
 		);
@@ -179,7 +191,14 @@ public class MainGUI extends JFrame {
 
 
 
-
+	/**
+	 * Ein Monat ist vergangen
+	 * 
+	 * Alle E/A werden zu eine Summer gezählt
+	 * und mit Saldo verrechnet
+	 * 
+	 * Dieser Saldo wird daraufhin zum neuen Kontobetrag
+	 */
 	protected void monthPassed() 
 	{
 		System.out.println("Zeit vergeht");

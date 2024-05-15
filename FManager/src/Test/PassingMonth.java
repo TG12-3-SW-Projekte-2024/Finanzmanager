@@ -1,11 +1,9 @@
-package Steuerung;
+package Test;
 
 import java.time.*;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.concurrent.*;
-
-import Test.MainGUI;
 
 public class PassingMonth {
 	

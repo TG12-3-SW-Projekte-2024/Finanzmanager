@@ -3,6 +3,8 @@ package LinienDiagramm;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import Test.MainGUI;
+
 public class GraphGUI {
     public static void createAndShowGUI() {
         JFrame frame = new JFrame("Graph Example");
@@ -15,8 +17,8 @@ public class GraphGUI {
         frame.add(graphPanel);
         frame.setVisible(true);
 
-        Steuerung steuerung = new Steuerung(graphData);
-        steuerung.start(); // Start updating graph data
+        MainGUI dieGUI = new MainGUI();
+   
     }
 
     public static void main(String[] args) {

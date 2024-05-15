@@ -11,10 +11,17 @@ public class GraphData {
         dataPoints = new ArrayList<>();
     }
 
+    /**
+     * Dem Liniendiagramm wird eine neue Linie hinzugefügt
+     * Aber nur, wenn Zeit vergangen ist
+     * 
+     * @param saldo 
+     * die Differenz zwischen Einkommen und Ausgaben ergeben den nächsten Punkt
+     */
     public void addDataPoint(int saldo) {
         dataPoints.add(saldo);
         if (dataPoints.size() > maxDataPoints) {
-            dataPoints.remove(0); // Remove the oldest data point if there are more than maxDataPoints
+            dataPoints.remove(0); 
         }
     }
 

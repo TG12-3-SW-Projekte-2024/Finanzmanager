@@ -1,11 +1,9 @@
-package Steuerung;
+package Test;
 
 import java.time.*;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.concurrent.*;
-
-import Test.MainGUI;
 
 public class PassingWeek {
     
@@ -37,7 +35,7 @@ public class PassingWeek {
     private void scheduleNextRun() {
         LocalDateTime nextRun = LocalDateTime.now().plusWeeks(1).withHour(0).withMinute(0).withSecond(0);
         long delay = Duration.between(LocalDateTime.now(), nextRun).toMillis();
-        scheduler.schedule(this::executeWeekPassed, delay, TimeUnit.MILLISECONDS);
+        scheduler.schedule(this::executeWeekPassed,delay, TimeUnit.MILLISECONDS);
     }
 
     private void executeWeekPassed() {
