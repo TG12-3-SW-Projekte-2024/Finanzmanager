@@ -1,28 +1,58 @@
 package LinienDiagramm;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
 
-import Test.MainGUI;
-
+/**
+ * Diese Klasse erstellt das GUI und integriert das GraphPanel.
+ */
 public class GraphGUI {
-    public static void createAndShowGUI() {
-        JFrame frame = new JFrame("Graph Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
+    private GraphData graphData;
+    private GraphPanel graphPanel;
 
-        GraphData graphData = new GraphData();
-        GraphPanel graphPanel = new GraphPanel(graphData);
-
-        frame.add(graphPanel);
-        frame.setVisible(true);
-
-        MainGUI dieGUI = new MainGUI();
-   
+    /**
+     * Konstruktor, der das GraphData-Objekt übernimmt und das GUI erstellt.
+     * @param graphData Die Daten für das Diagramm.
+     */
+    public GraphGUI(GraphData graphData) {
+        this.graphData = graphData;
+        createAndShowGUI();
     }
 
+    /**
+     * Erstellt und zeigt das GUI.
+     */
+    private void createAndShowGUI() {
+        JFrame frame = new JFrame("Liniendiagramm Beispiel");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+
+        graphPanel = new GraphPanel(graphData);
+        frame.add(graphPanel, BorderLayout.CENTER);
+
+        frame.setVisible(true);
+    }
+
+    /**
+     * Aktualisiert das Diagramm, indem das Panel neu gezeichnet wird.
+     */
+    public void refreshGraph() {
+        graphPanel.repaint();
+    }
+
+    /**
+     * Hauptmethode zum Starten der Anwendung.
+     * @param args Kommandozeilenargumente.
+     */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(GraphGUI::createAndShowGUI);
+        GraphData data = new GraphData();
+        GraphGUI gui = new GraphGUI(data);
+
+        // Simulation monatlicher Aktualisierungen für Testzwecke
+        Timer timer = new Timer(1000, e -> {
+            data.addDataPoint((int) (Math.random() * 20000 - 10000)); // Zufallswerte zwischen -10000 und 10000
+            gui.refreshGraph();
+        });
+        timer.start();
     }
 }
-
