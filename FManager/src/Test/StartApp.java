@@ -2,12 +2,13 @@ package Test;
 
 import java.io.IOException;
 
+
+
 /**
  * Jede benötigte Klasse und Methode wird ausgeführt.
  */
 public class StartApp {
     public static void main(String[] args) throws IOException {
-    	//test
     	
         MainGUI mainGUI = new MainGUI();
         PassingMonth scheduler1 = new PassingMonth(mainGUI);
@@ -17,7 +18,6 @@ public class StartApp {
         scheduler2.startScheduling();
         scheduler3.startScheduling();
         mainGUI.setVisible(true);
-        
         
         
     }

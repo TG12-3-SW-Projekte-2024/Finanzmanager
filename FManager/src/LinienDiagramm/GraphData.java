@@ -12,7 +12,7 @@ public class GraphData {
     private final String filename = "graphData.txt";
 
     /**
-     * Konstruktor, der die Datenpunkte initialisiert und aus der Datei lädt.
+     * Konstruktor, der die Datenpunkte initialisiert und aus einer Textdatei lädt
      */
     public GraphData() {
         dataPoints = new ArrayList<>();
@@ -20,7 +20,7 @@ public class GraphData {
     }
 
     /**
-     * Fügt einen neuen Datenpunkt hinzu und speichert die aktualisierten Daten in die Datei.
+     * Fügt einen neuen Datenpunkt hinzu und speichert die aktualisierten Daten in einer Textdatei.
      * @param summe Der neue Datenpunkt (Saldo).
      */
     public void addDataPoint(double summe) {
@@ -30,14 +30,14 @@ public class GraphData {
 
     /**
      * Gibt die Liste der Datenpunkte zurück.
-     * @return Die Liste der Datenpunkte.
+     * @return die gespeicherten Datenpunkte(Linienpunkte) 
      */
     public List<Integer> getDataPoints() {
         return dataPoints;
     }
 
     /**
-     * Speichert die aktuellen Datenpunkte in eine Datei.
+     * Speichert die aktuellen Datenpunkte in einer Textdatei.
      */
     private void saveToFile() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
@@ -50,7 +50,7 @@ public class GraphData {
     }
 
     /**
-     * Lädt die Datenpunkte aus einer Datei.
+     * Lädt die Datenpunkte aus einer Textdatei.
      */
     private void loadFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {

@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import LinienDiagramm.GraphGUI;
 import Steuerung.Steuerung;
 
 import java.awt.BorderLayout;
@@ -27,7 +28,7 @@ public class MainGUI extends JFrame {
 	
 	//Assoziation
 	Steuerung  dieSteuerung;
-	ZeichneGraph derGraph;
+	GraphGUI dieGgui;
 	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -221,6 +222,10 @@ public class MainGUI extends JFrame {
 		
 		//Summe anzeigen
 		tfKonto.setText(""+summe);
+		
+		dieGgui.addSaldoDataPoint(summe);
+		dieGgui.setVisible(true);
+        
 		
 	}
 	

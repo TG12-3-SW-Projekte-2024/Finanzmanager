@@ -1,6 +1,9 @@
 package LinienDiagramm;
 
 import javax.swing.*;
+
+import Test.MainGUI;
+
 import java.awt.*;
 
 /**
@@ -9,7 +12,16 @@ import java.awt.*;
 public class GraphGUI {
     private GraphData graphData;
     private GraphPanel graphPanel;
+    MainGUI dieGUI;
 
+    public void addSaldoDataPoint(double summe) {
+		GraphData data = new GraphData();
+        GraphGUI gui = new GraphGUI(data);
+        int saldo = (int) summe;
+        data.addDataPoint(saldo);
+        data.addDataPoint(saldo);
+		
+	}
     /**
      * Konstruktor, der das GraphData-Objekt übernimmt und das GUI erstellt.
      * @param graphData Die Daten für das Diagramm.
@@ -26,6 +38,7 @@ public class GraphGUI {
         JFrame frame = new JFrame("Liniendiagramm Beispiel");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
+        frame.setVisible(true);
 
         graphPanel = new GraphPanel(graphData);
         frame.add(graphPanel, BorderLayout.CENTER);
@@ -40,19 +53,23 @@ public class GraphGUI {
         graphPanel.repaint();
     }
 
-    /**
-     * Hauptmethode zum Starten der Anwendung.
-     * @param args Kommandozeilenargumente.
-     */
     public static void main(String[] args) {
-        GraphData data = new GraphData();
-        GraphGUI gui = new GraphGUI(data);
-
-        // Simulation monatlicher Aktualisierungen für Testzwecke
-        Timer timer = new Timer(1000, e -> {
+        
+        
+        /**
+         * Timer timer = new Timer(1000, e -> {
             data.addDataPoint((int) (Math.random() * 20000 - 10000)); // Zufallswerte zwischen -10000 und 10000
             gui.refreshGraph();
         });
         timer.start();
+         */
+        // Simulation monatlicher Aktualisierungen für Testzwecke
+        
     }
+	public void setVisible(boolean b) {
+		createAndShowGUI();
+		
+	}
+
+	
 }
