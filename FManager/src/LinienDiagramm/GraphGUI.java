@@ -12,7 +12,6 @@ import java.awt.*;
 public class GraphGUI {
     private GraphData graphData;
     private GraphPanel graphPanel;
-    MainGUI dieGUI;
 
     public void addSaldoDataPoint(double summe) {
 		GraphData data = new GraphData();
@@ -56,20 +55,18 @@ public class GraphGUI {
     public static void main(String[] args) {
         
         
-        /**
-         * Timer timer = new Timer(1000, e -> {
-            data.addDataPoint((int) (Math.random() * 20000 - 10000)); // Zufallswerte zwischen -10000 und 10000
-            gui.refreshGraph();
-        });
-        timer.start();
-         */
+         Timer timer = new Timer(1000, e -> {
+        	 GraphData data = new GraphData();
+             GraphGUI gui = new GraphGUI(data);
+
+             // Simulation monatlicher Aktualisierungen für Testzwecke
+                 data.addDataPoint((int) (Math.random() * 20000 - 10000)); // Zufallswerte zwischen -10000 und 10000
+                 gui.refreshGraph();
+             });
+             timer.start();
         // Simulation monatlicher Aktualisierungen für Testzwecke
         
     }
-	public void setVisible(boolean b) {
-		createAndShowGUI();
-		
-	}
 
 	
 }
