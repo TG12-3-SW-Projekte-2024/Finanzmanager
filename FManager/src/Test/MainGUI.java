@@ -1,37 +1,13 @@
-package Test;
-
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
+// Import für das Diagramm hinzufügen
+import LinienDiagramm.GraphData;
 import LinienDiagramm.GraphGUI;
-import Steuerung.Steuerung;
 
-import java.awt.BorderLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JList;
-import javax.swing.SwingConstants;
+// Rest des Imports bleibt gleich
 
 public class MainGUI extends JFrame {
-
     // Assoziation
     Steuerung dieSteuerung;
-    GraphGUI dieGgui;
-
+    GraphGUI dieGgui; 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField tfEinkommen;
@@ -40,6 +16,7 @@ public class MainGUI extends JFrame {
     JButton btnZeit;
     JLabel lbStatus;
     JButton btnAdd;
+    JButton btnClear; 
     JList<String> AnzeigeEin;
     JList<String> AnzeigeAusg;
 
@@ -68,10 +45,8 @@ public class MainGUI extends JFrame {
     }
 
     public MainGUI() {
-
-      dieSteuerung = new Steuerung(this);
-      dieGgui = new GraphGUI(); // Initialisierung des Graphen
-
+        dieSteuerung = new Steuerung(this);
+        dieGgui = new GraphGUI(); // Initialisierung des Graphen
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 498, 551);
@@ -174,8 +149,9 @@ public class MainGUI extends JFrame {
         
         btnNewButton = new JButton("Eingabe löschen");
         btnNewButton.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        	}
+            public void actionPerformed(ActionEvent e) {
+                clearEntries();
+            }
         });
         panelButtons.add(btnNewButton);
 
@@ -229,9 +205,9 @@ public class MainGUI extends JFrame {
 
         // Save summe to file
         saveSumme(summe);
+
         // Aktualisiere das Diagramm
         dieGgui.updateGraph(summe);
-        
     }
 
     protected void dayPassed() {
@@ -239,7 +215,7 @@ public class MainGUI extends JFrame {
     }
 
     protected void weekPassed() {
-    	System.out.println("Trauma");
+        System.out.println("Trauma");
     }
 
     /**
@@ -329,10 +305,24 @@ public class MainGUI extends JFrame {
         for (Double d : ListeEin) {
             model1.addElement(d.toString());
         }
-        
+
         model2.clear();
         model2.addElement("Ausgaben:");
         for (Double d : ListeAusg) {
             model2.addElement(d.toString());
         }
-    }}
+    }
+
+    /**
+     * Löscht alle Einträge in den JLists und aktualisiert die Dateien.
+     */
+    private void clearEntries() {
+        ListeEin.clear();
+        ListeAusg.clear();
+        updateListModels();
+        saveList("Einkommen.txt", ListeEin);
+        saveList("Ausgaben.txt", ListeAusg);
+        tfKonto.setText("0");
+        saveSumme(0);
+    }
+}
