@@ -70,7 +70,8 @@ public class MainGUI extends JFrame {
     public MainGUI() {
 
       dieSteuerung = new Steuerung(this);
-        // derGraph = new ZeichneGraphen(this);
+      dieGgui = new GraphGUI(); // Initialisierung des Graphen
+
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 498, 551);
@@ -228,7 +229,8 @@ public class MainGUI extends JFrame {
 
         // Save summe to file
         saveSumme(summe);
-
+        // Aktualisiere das Diagramm
+        dieGgui.updateGraph(summe);
         
     }
 

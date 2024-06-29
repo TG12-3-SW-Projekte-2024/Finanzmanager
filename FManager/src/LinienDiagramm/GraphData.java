@@ -1,62 +1,44 @@
 package LinienDiagramm;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-/**
- * Diese Klasse verwaltet die Datenpunkte für das Diagramm und sorgt für die Persistenz in einer Datei.
- */
 public class GraphData {
-    private List<Integer> dataPoints;
-    private final String filename = "graphData.txt";
+    private List<Double> dataPoints = new ArrayList<>();
+    private static final int MAX_POINTS = 6;
+    private static final String FILE_NAME = "GraphData.txt";
 
-    /**
-     * Konstruktor, der die Datenpunkte initialisiert und aus einer Textdatei lädt
-     */
     public GraphData() {
-        dataPoints = new ArrayList<>();
         loadFromFile();
     }
 
-    /**
-     * Fügt einen neuen Datenpunkt hinzu und speichert die aktualisierten Daten in einer Textdatei.
-     * @param summe Der neue Datenpunkt (Saldo).
-     */
-    public void addDataPoint(double summe) {
-        dataPoints.add((int) summe);
+    public void addDataPoint(double point) {
+        if (dataPoints.size() >= MAX_POINTS) {
+            dataPoints.remove(0);
+        }
+        dataPoints.add(point);
         saveToFile();
     }
 
-    /**
-     * Gibt die Liste der Datenpunkte zurück.
-     * @return die gespeicherten Datenpunkte(Linienpunkte) 
-     */
-    public List<Integer> getDataPoints() {
+    public List<Double> getDataPoints() {
         return dataPoints;
     }
 
-    /**
-     * Speichert die aktuellen Datenpunkte in einer Textdatei.
-     */
     private void saveToFile() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-            for (int point : dataPoints) {
-                writer.println(point);
+        try (PrintWriter out = new PrintWriter(new FileWriter(FILE_NAME))) {
+            for (double point : dataPoints) {
+                out.println(point);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * Lädt die Datenpunkte aus einer Textdatei.
-     */
     private void loadFromFile() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
-            while ((line = reader.readLine()) != null) {
-                dataPoints.add(Integer.parseInt(line));
+            while ((line = br.readLine()) != null) {
+                dataPoints.add(Double.parseDouble(line));
             }
         } catch (IOException e) {
             e.printStackTrace();

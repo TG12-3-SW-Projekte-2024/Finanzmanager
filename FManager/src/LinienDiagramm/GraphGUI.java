@@ -1,72 +1,77 @@
 package LinienDiagramm;
 
 import javax.swing.*;
-
-import Test.MainGUI;
-
 import java.awt.*;
+import java.util.List;
 
-/**
- * Diese Klasse erstellt das GUI und integriert das GraphPanel.
- */
-public class GraphGUI {
+public class GraphGUI extends JFrame {
     private GraphData graphData;
-    private GraphPanel graphPanel;
 
-    public void addSaldoDataPoint(double summe) {
-		GraphData data = new GraphData();
-        GraphGUI gui = new GraphGUI(data);
-        int saldo = (int) summe;
-        data.addDataPoint(saldo);
-        data.addDataPoint(saldo);
-		
-	}
-    /**
-     * Konstruktor, der das GraphData-Objekt übernimmt und das GUI erstellt.
-     * @param graphData Die Daten für das Diagramm.
-     */
-    public GraphGUI(GraphData graphData) {
+    public GraphGUI() {
+        setTitle("Liniendiagramm");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+    }
+
+    public void setGraphData(GraphData graphData) {
         this.graphData = graphData;
-        createAndShowGUI();
     }
 
-    /**
-     * Erstellt und zeigt das GUI.
-     */
-    private void createAndShowGUI() {
-        JFrame frame = new JFrame("Liniendiagramm Beispiel");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-        frame.setVisible(true);
-
-        graphPanel = new GraphPanel(graphData);
-        frame.add(graphPanel, BorderLayout.CENTER);
-
-        frame.setVisible(true);
+    public void updateGraph(double newDataPoint) {
+        if (graphData != null) {
+            graphData.addDataPoint(newDataPoint);
+            repaint();
+        }
     }
 
-    /**
-     * Aktualisiert das Diagramm, indem das Panel neu gezeichnet wird.
-     */
-    public void refreshGraph() {
-        graphPanel.repaint();
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        if (graphData != null) {
+            List<Double> dataPoints = graphData.getDataPoints();
+            if (dataPoints.size() > 1) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                int width = getWidth();
+                int height = getHeight();
+                int padding = 50;
+                int labelPadding = 25;
+
+                double xScale = ((double) width - 2 * padding - labelPadding) / (dataPoints.size() - 1);
+                double maxDataPoint = dataPoints.stream().max(Double::compare).get();
+                double yScale = ((double) height - 2 * padding - labelPadding) / maxDataPoint;
+
+                List<Point> graphPoints = new ArrayList<>();
+                for (int i = 0; i < dataPoints.size(); i++) {
+                    int x1 = (int) (i * xScale + padding + labelPadding);
+                    int y1 = (int) ((maxDataPoint - dataPoints.get(i)) * yScale + padding);
+                    graphPoints.add(new Point(x1, y1));
+                }
+
+                g2d.setColor(Color.BLACK);
+                g2d.drawLine(padding + labelPadding, height - padding - labelPadding, padding + labelPadding, padding);
+                g2d.drawLine(padding + labelPadding, height - padding - labelPadding, width - padding, height - padding - labelPadding);
+
+                g2d.setColor(Color.BLUE);
+                for (int i = 0; i < graphPoints.size() - 1; i++) {
+                    int x1 = graphPoints.get(i).x;
+                    int y1 = graphPoints.get(i).y;
+                    int x2 = graphPoints.get(i + 1).x;
+                    int y2 = graphPoints.get(i + 1).y;
+                    g2d.drawLine(x1, y1, x2, y2);
+                }
+
+                g2d.setColor(Color.RED);
+                for (Point point : graphPoints) {
+                    int x = point.x - 2;
+                    int y = point.y - 2;
+                    int ovalW = 4;
+                    int ovalH = 4;
+                    g2d.fillOval(x, y, ovalW, ovalH);
+                }
+            }
+        }
     }
-
-    public static void main(String[] args) {
-        
-        
-         Timer timer = new Timer(1000, e -> {
-        	 GraphData data = new GraphData();
-             GraphGUI gui = new GraphGUI(data);
-
-             // Simulation monatlicher Aktualisierungen für Testzwecke
-                 data.addDataPoint((int) (Math.random() * 20000 - 10000)); // Zufallswerte zwischen -10000 und 10000
-                 gui.refreshGraph();
-             });
-             timer.start();
-        // Simulation monatlicher Aktualisierungen für Testzwecke
-        
-    }
-
-	
 }
