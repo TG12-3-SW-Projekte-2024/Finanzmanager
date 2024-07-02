@@ -20,7 +20,7 @@ public class StartApp {
         scheduler2.startScheduling();
         scheduler3.startScheduling();
         mainGUI.setVisible(true);
-        
+        diegGui.setVisible(true);
         
     }
 }

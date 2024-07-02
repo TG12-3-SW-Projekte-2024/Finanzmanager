@@ -1,6 +1,12 @@
 package LinienDiagramm;
 
 import javax.swing.*;
+
+import Test.Exception;
+import Test.MainGUI;
+import Test.Runnable;
+import Test.String;
+
 import java.awt.*;
 import java.util.List;
 
@@ -17,8 +23,20 @@ public class GraphGUI extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    
-    public void setGraphData(GraphData graphData) {
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    GraphGUI frame = new GraphGUI();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+	public void setGraphData(GraphData graphData) {
         this.graphData = graphData;
     }
 
@@ -33,7 +51,7 @@ public class GraphGUI extends JFrame {
             repaint();
         }
     }
-
+x
     /**
      * Zeichnet das Liniendiagramm neu.
      * 
