@@ -1,13 +1,29 @@
-// Import für das Diagramm hinzufügen
+
 import LinienDiagramm.GraphData;
 import LinienDiagramm.GraphGUI;
-
-// Rest des Imports bleibt gleich
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import Steuerung.Steuerung;
+import java.awt.BorderLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JList;
+import javax.swing.SwingConstants;
 
 public class MainGUI extends JFrame {
     // Assoziation
     Steuerung dieSteuerung;
     GraphGUI dieGgui; 
+    
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField tfEinkommen;
@@ -196,14 +212,13 @@ public class MainGUI extends JFrame {
         // Konto Text in Zahl konvertieren
         double Konto = Double.parseDouble(strKontoinhalt);
 
-        // Berechnung der Summe
+       
         double summe = dieSteuerung.berechneSumme(REinkommen, RAusgaben, Konto);
-        // derGraph = new ZeichneGraph();
+        derGraph = new ZeichneGraph();
 
-        // Summe anzeigen
+
         tfKonto.setText("" + summe);
 
-        // Save summe to file
         saveSumme(summe);
 
         // Aktualisiere das Diagramm
@@ -261,9 +276,6 @@ public class MainGUI extends JFrame {
         }
     }
 
-    /**
-     * Lädt eine Liste aus einer Datei.
-     */
     private List<Double> loadList(String filename) {
         List<Double> list = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {

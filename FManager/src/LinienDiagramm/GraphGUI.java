@@ -4,15 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Die Klasse GraphGUI stellt eine Benutzeroberfläche dar, die ein Liniendiagramm anzeigt.
- * Sie zeichnet die Datenpunkte und aktualisiert das Diagramm, wenn neue Datenpunkte hinzugefügt werden.
- */
 public class GraphGUI extends JFrame {
     private GraphData graphData;
 
     /**
-     * Konstruktor, der das Fenster für das Liniendiagramm initialisiert.
+     * Konstruktor, der das GUI für das Liniendiagramm initialisiert.
      */
     public GraphGUI() {
         setTitle("Liniendiagramm");
@@ -21,11 +17,7 @@ public class GraphGUI extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    /**
-     * Setzt die Datenquelle für das Diagramm.
-     * 
-     * @param graphData die GraphData-Instanz, die die Datenpunkte enthält
-     */
+    
     public void setGraphData(GraphData graphData) {
         this.graphData = graphData;
     }

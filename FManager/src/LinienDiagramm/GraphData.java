@@ -5,8 +5,8 @@ import java.util.*;
 
 /**
  * Die Klasse GraphData verwaltet die Datenpunkte, die im Liniendiagramm angezeigt werden.
- * Sie lädt die Datenpunkte aus einer Datei, speichert sie und sorgt dafür, dass immer nur eine begrenzte Anzahl
- * von Datenpunkten gespeichert wird.
+ * Sie lädt die Datenpunkte aus einer Textdatei, speichert sie und sorgt dafür, dass dazu auch immer nur eine begrenzte Anzahl
+ * von Datenpunkte gespeichert wird
  */
 public class GraphData {
     private List<Double> dataPoints = new ArrayList<>();
