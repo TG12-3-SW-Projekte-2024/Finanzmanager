@@ -1,65 +1,27 @@
 package LinienDiagramm;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Die Klasse GraphData verwaltet die Datenpunkte, die im Liniendiagramm angezeigt werden.
- * Sie lädt die Datenpunkte aus einer Textdatei, speichert sie und sorgt dafür, dass dazu auch immer nur eine begrenzte Anzahl
- * von Datenpunkte gespeichert wird
+ * Die Klasse GraphData verwaltet die Daten für die Graphen.
  */
 public class GraphData {
-    private List<Double> dataPoints = new ArrayList<>();
-    private static final int MAX_POINTS = 6;
-    private static final String FILE_NAME = "GraphData.txt";
+    
+    private static final String FILE_NAME = "graphData.txt";
+    private List<Double> dataPoints;
 
-    /**
-     * Konstruktor, der die Datenpunkte aus der Datei lädt.
-     */
     public GraphData() {
-        loadFromFile();
+        dataPoints = new ArrayList<>();
+        loadGraphData();
     }
 
     /**
-     * Fügt einen neuen Datenpunkt hinzu. Wenn die maximale Anzahl von Datenpunkten erreicht ist,
-     * wird der älteste Datenpunkt entfernt.
-     * 
-     * @param point der hinzuzufügende Datenpunkt
+     * Lädt die Graph-Daten aus einer Datei.
      */
-    public void addDataPoint(double point) {
-        if (dataPoints.size() >= MAX_POINTS) {
-            dataPoints.remove(0);
-        }
-        dataPoints.add(point);
-        saveToFile();
-    }
-
-    /**
-     * Gibt die Liste der Datenpunkte zurück.
-     * 
-     * @return die Liste der Datenpunkte
-     */
-    public List<Double> getDataPoints() {
-        return dataPoints;
-    }
-
-    /**
-     * Speichert die aktuellen Datenpunkte in die Datei.
-     */
-    private void saveToFile() {
-        try (PrintWriter out = new PrintWriter(new FileWriter(FILE_NAME))) {
-            for (double point : dataPoints) {
-                out.println(point);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Lädt die Datenpunkte aus der Datei.
-     */
-    private void loadFromFile() {
+    private void loadGraphData() {
+        ensureFileExists();
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -68,5 +30,51 @@ public class GraphData {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Stellt sicher, dass die Datei existiert, und erstellt sie bei Bedarf.
+     */
+    private void ensureFileExists() {
+        File file = new File(FILE_NAME);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Fügt einen neuen Datenpunkt hinzu und speichert die Daten.
+     *
+     * @param dataPoint Der neue Datenpunkt
+     */
+    public void addDataPoint(double dataPoint) {
+        dataPoints.add(dataPoint);
+        saveGraphData();
+    }
+
+    /**
+     * Speichert die Graph-Daten in einer Datei.
+     */
+    private void saveGraphData() {
+        try (PrintWriter out = new PrintWriter(new FileWriter(FILE_NAME))) {
+            for (Double dataPoint : dataPoints) {
+                out.println(dataPoint);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Gibt die Liste der Datenpunkte zurück.
+     *
+     * @return Die Liste der Datenpunkte
+     */
+    public List<Double> getDataPoints() {
+        return dataPoints;
     }
 }

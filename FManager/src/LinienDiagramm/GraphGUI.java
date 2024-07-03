@@ -2,16 +2,20 @@ package LinienDiagramm;
 
 import javax.swing.*;
 
-import Test.Exception;
-import Test.MainGUI;
-import Test.Runnable;
-import Test.String;
+
+
+
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GraphGUI extends JFrame {
-    private GraphData graphData;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private GraphData graphData;
 
     /**
      * Konstruktor, der das GUI für das Liniendiagramm initialisiert.
@@ -21,6 +25,7 @@ public class GraphGUI extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        
     }
 
     public static void main(String[] args) {
@@ -51,7 +56,7 @@ public class GraphGUI extends JFrame {
             repaint();
         }
     }
-x
+
     /**
      * Zeichnet das Liniendiagramm neu.
      * 

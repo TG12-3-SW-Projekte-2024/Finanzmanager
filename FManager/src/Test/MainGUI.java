@@ -1,3 +1,4 @@
+package Test;
 
 import LinienDiagramm.GraphData;
 import LinienDiagramm.GraphGUI;
@@ -12,8 +13,16 @@ import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JList;
@@ -22,8 +31,8 @@ import javax.swing.SwingConstants;
 public class MainGUI extends JFrame {
     // Assoziation
     Steuerung dieSteuerung;
-    GraphGUI dieGgui; 
-    
+    GraphGUI dieGgui;
+
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField tfEinkommen;
@@ -32,7 +41,7 @@ public class MainGUI extends JFrame {
     JButton btnZeit;
     JLabel lbStatus;
     JButton btnAdd;
-    JButton btnClear; 
+    JButton btnClear;
     JList<String> AnzeigeEin;
     JList<String> AnzeigeAusg;
 
@@ -166,7 +175,7 @@ public class MainGUI extends JFrame {
         btnNewButton = new JButton("Eingabe löschen");
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                clearEntries();
+                clearSelectedEntry();
             }
         });
         panelButtons.add(btnNewButton);
@@ -200,7 +209,7 @@ public class MainGUI extends JFrame {
     protected void monthPassed() {
         System.out.println("Zeit vergeht");
 
-        // Einkommen Array als Gesamtbetragt
+        // Einkommen Array als Gesamtbetrag
         double REinkommen = ListeEin.stream().mapToDouble(Double::doubleValue).sum();
 
         // Ausgaben Array als Gesamtbetrag
@@ -212,14 +221,13 @@ public class MainGUI extends JFrame {
         // Konto Text in Zahl konvertieren
         double Konto = Double.parseDouble(strKontoinhalt);
 
-       
         double summe = dieSteuerung.berechneSumme(REinkommen, RAusgaben, Konto);
-        derGraph = new ZeichneGraph();
-
 
         tfKonto.setText("" + summe);
 
         saveSumme(summe);
+        
+        saveState();
 
         // Aktualisiere das Diagramm
         dieGgui.updateGraph(summe);
@@ -264,77 +272,80 @@ public class MainGUI extends JFrame {
      * Speichert die Liste in eine Datei.
      * 
      * @param filename Der Name der Datei.
-     * @param list     Die zu speichernde Liste.
+     * @param list     Die Liste der Elemente.
+     * @throws IOException Wenn ein Fehler beim Schreiben der Datei auftritt.
      */
-    private void saveList(String filename, List<Double> list) {
+    private void saveList(String filename, List<Double> list) throws IOException {
         try (PrintWriter out = new PrintWriter(new FileWriter(filename))) {
-            for (Double d : list) {
-                out.println(d);
+            for (Double value : list) {
+                out.println(value);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    private List<Double> loadList(String filename) {
-        List<Double> list = new ArrayList<>();
+    /**
+     * Lädt die Liste aus einer Datei.
+     * 
+     * @param filename Der Name der Datei.
+     * @param list     Die Liste, in die die Elemente geladen werden sollen.
+     * @throws IOException Wenn ein Fehler beim Lesen der Datei auftritt.
+     */
+    private void loadList(String filename, List<Double> list) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
                 list.add(Double.parseDouble(line));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return list;
-    }
-
-    /**
-     * Stellt den Zustand der Anwendung aus Dateien wieder her und aktualisiert die Listenfelder.
-     */
-    private void restoreState() {
-        loadSumme();
-        ListeEin = new ArrayList<>(loadList("Einkommen.txt"));
-        ListeAusg = new ArrayList<>(loadList("Ausgaben.txt"));
-        updateListModels();
     }
 
     /**
      * Speichert den aktuellen Zustand der Anwendung in Dateien.
      */
     private void saveState() {
-        saveSumme(Double.parseDouble(tfKonto.getText()));
-        saveList("Einkommen.txt", ListeEin);
-        saveList("Ausgaben.txt", ListeAusg);
-    }
-
-    /**
-     * Aktualisiert die ListModels für AnzeigeEin und AnzeigeAusg.
-     */
-    private void updateListModels() {
-        model1.clear();
-        model1.addElement("Einkommen:");
-        for (Double d : ListeEin) {
-            model1.addElement(d.toString());
-        }
-
-        model2.clear();
-        model2.addElement("Ausgaben:");
-        for (Double d : ListeAusg) {
-            model2.addElement(d.toString());
+        try {
+            saveSumme(Double.parseDouble(tfKonto.getText()));
+            saveList("Einkommen.txt", ListeEin);
+            saveList("Ausgaben.txt", ListeAusg);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     /**
-     * Löscht alle Einträge in den JLists und aktualisiert die Dateien.
+     * Stellt den gespeicherten Zustand der Anwendung aus Dateien wieder her.
      */
-    private void clearEntries() {
-        ListeEin.clear();
-        ListeAusg.clear();
-        updateListModels();
-        saveList("Einkommen.txt", ListeEin);
-        saveList("Ausgaben.txt", ListeAusg);
-        tfKonto.setText("0");
-        saveSumme(0);
+    private void restoreState() {
+        try {
+            loadSumme();
+            loadList("Einkommen.txt", ListeEin);
+            loadList("Ausgaben.txt", ListeAusg);
+            for (Double value : ListeEin) {
+                model1.addElement(value.toString());
+            }
+            for (Double value : ListeAusg) {
+                model2.addElement(value.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Löscht das ausgewählte Element aus der entsprechenden Liste.
+     */
+    private void clearSelectedEntry() {
+        int selectedEinkommenIndex = AnzeigeEin.getSelectedIndex();
+        int selectedAusgabenIndex = AnzeigeAusg.getSelectedIndex();
+
+        if (selectedEinkommenIndex > 0) {
+            model1.remove(selectedEinkommenIndex);
+            ListeEin.remove(selectedEinkommenIndex - 1);
+        }
+
+        if (selectedAusgabenIndex > 0) {
+            model2.remove(selectedAusgabenIndex);
+            ListeAusg.remove(selectedAusgabenIndex - 1);
+        }
     }
 }
